@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { signIn } from 'next-auth/react'
-import { Film, Github, Mail, Eye, EyeOff, User } from 'lucide-react'
+import { Film, Mail, Eye, EyeOff, User } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -54,10 +54,9 @@ export default function RegisterPage() {
         }),
       })
 
-      const data = await response.json()
-
       if (!response.ok) {
-        throw new Error(data.message || 'Something went wrong')
+        const data = await response.json()
+        throw new Error(data.message || 'Failed to create account')
       }
 
       toast.success('Success', {
@@ -74,8 +73,11 @@ export default function RegisterPage() {
       if (result?.ok) {
         router.push('/')
         router.refresh()
+      } else {
+        router.push('/login')
       }
     } catch (error: any) {
+      console.error('Registration error:', error)
       toast.error('Error', {
         description: error.message || 'Failed to create account',
       })
@@ -84,9 +86,17 @@ export default function RegisterPage() {
     }
   }
 
-  const handleOAuthSignIn = (provider: string) => {
+  const handleGoogleSignIn = async () => {
     setIsLoading(true)
-    signIn(provider, { callbackUrl: '/' })
+    try {
+      await signIn('google', { callbackUrl: '/' })
+    } catch (error) {
+      console.error('Google sign in error:', error)
+      toast.error('Error', {
+        description: 'Failed to sign in with Google',
+      })
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -105,27 +115,17 @@ export default function RegisterPage() {
           </p>
         </div>
 
-        {/* OAuth Buttons */}
-        <div className="space-y-2">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => handleOAuthSignIn('google')}
-            disabled={isLoading}
-          >
-            <FcGoogle className="mr-2 h-5 w-5" />
-            Continue with Google
-          </Button>
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={() => handleOAuthSignIn('github')}
-            disabled={isLoading}
-          >
-            <Github className="mr-2 h-5 w-5" />
-            Continue with GitHub
-          </Button>
-        </div>
+        {/* OAuth Button */}
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={handleGoogleSignIn}
+          disabled={isLoading}
+          type="button"
+        >
+          <FcGoogle className="mr-2 h-5 w-5" />
+          Continue with Google
+        </Button>
 
         <div className="relative">
           <Separator />
@@ -148,6 +148,7 @@ export default function RegisterPage() {
                 required
                 disabled={isLoading}
                 className="pl-10"
+                autoComplete="name"
               />
               <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             </div>
@@ -165,6 +166,7 @@ export default function RegisterPage() {
                 required
                 disabled={isLoading}
                 className="pl-10"
+                autoComplete="email"
               />
               <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             </div>
@@ -182,11 +184,13 @@ export default function RegisterPage() {
                 required
                 disabled={isLoading}
                 className="pr-10"
+                autoComplete="new-password"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                tabIndex={-1}
               >
                 {showPassword ? (
                   <EyeOff className="h-4 w-4" />
@@ -210,6 +214,7 @@ export default function RegisterPage() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
               disabled={isLoading}
+              autoComplete="new-password"
             />
           </div>
 

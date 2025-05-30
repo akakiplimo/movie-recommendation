@@ -11,15 +11,16 @@ import { CastCrew } from '@/components/movies/cast-crew'
 import { MovieActions } from '@/components/movies/movie-actions'
 import { MovieCarousel } from '@/components/movies/movie-carousel'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Skeleton } from '@/components/ui/skeleton'
+import React, { Usable } from 'react'
 
 export default function MovieDetailsPage({
   params,
 }: {
-  params: { id: string }
+  params: { id: string } | Promise<{ id: string }>
 }) {
-  const { data, isLoading, error } = useMovieDetails(params.id)
+  const { id } = React.use(params as Usable<{ id: string; }>)
+  const { data, isLoading, error } = useMovieDetails(id)
 
   if (error) {
     notFound()

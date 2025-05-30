@@ -13,16 +13,13 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { useRouter } from 'next/navigation'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export function UserMenu() {
   const { data: session, status } = useSession()
-  const router = useRouter()
 
   if (status === 'loading') {
-    return (
-      <div className="h-8 w-8 animate-pulse rounded-full bg-muted" />
-    )
+    return <Skeleton className="h-8 w-8 rounded-full" />
   }
 
   if (!session) {
@@ -30,7 +27,7 @@ export function UserMenu() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => router.push('/login')}
+        onClick={() => signIn(undefined, { callbackUrl: '/' })}
         className="gap-2"
       >
         <User className="h-4 w-4" />
@@ -46,7 +43,7 @@ export function UserMenu() {
           <Avatar className="h-8 w-8">
             <AvatarImage src={session.user.image || undefined} alt={session.user.name || 'User'} />
             <AvatarFallback>
-              {session.user.name?.charAt(0).toUpperCase() || 'U'}
+              {session.user.name?.charAt(0).toUpperCase() || session.user.email?.charAt(0).toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
         </Button>
@@ -54,7 +51,7 @@ export function UserMenu() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium">{session.user.name}</p>
+            <p className="text-sm font-medium">{session.user.name || 'User'}</p>
             <p className="text-xs text-muted-foreground">{session.user.email}</p>
           </div>
         </DropdownMenuLabel>
@@ -85,7 +82,7 @@ export function UserMenu() {
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => signOut()}
+          onClick={() => signOut({ callbackUrl: '/' })}
           className="cursor-pointer text-destructive"
         >
           <LogOut className="mr-2 h-4 w-4" />
