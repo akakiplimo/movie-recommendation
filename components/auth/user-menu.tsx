@@ -13,9 +13,11 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useRouter } from 'next/navigation'
 
 export function UserMenu() {
   const { data: session, status } = useSession()
+  const router = useRouter()
 
   if (status === 'loading') {
     return (
@@ -28,7 +30,7 @@ export function UserMenu() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => signIn()}
+        onClick={() => router.push('/login')}
         className="gap-2"
       >
         <User className="h-4 w-4" />
