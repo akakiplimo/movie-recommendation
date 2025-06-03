@@ -111,17 +111,44 @@ class TMDBService {
     return data
   }
 
-  // Discover movies with filters
+  // Discover movies with filters - FIXED VERSION
   async discoverMovies(filters: MovieFilters): Promise<MovieResponse> {
+    const params: any = {
+      page: filters.page || 1,
+      include_adult: false,
+      include_video: false,
+      language: 'en-US',
+    }
+
+    // Add genre filter if provided
+    if (filters.genre) {
+      params.with_genres = filters.genre
+    }
+
+    // Add year filter if provided
+    if (filters.year) {
+      params.primary_release_year = filters.year
+    }
+
+    // Add sort parameter
+    if (filters.sort_by) {
+      params.sort_by = filters.sort_by
+    } else {
+      params.sort_by = 'popularity.desc'
+    }
+
+    // Add minimum rating if provided
+    if (filters.minRating) {
+      params['vote_average.gte'] = filters.minRating
+      params['vote_count.gte'] = 50 // Ensure movies have enough votes
+    }
+
+    console.log('Discover params:', params) // Debug log
+
     const { data } = await tmdbClient.get<MovieResponse>('/discover/movie', {
-      params: {
-        page: filters.page || 1,
-        sort_by: filters.sort_by || 'popularity.desc',
-        with_genres: filters.genre,
-        year: filters.year,
-        include_adult: false,
-      },
+      params,
     })
+    
     return data
   }
 

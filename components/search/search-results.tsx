@@ -31,22 +31,47 @@ export function SearchResults({ query, filters }: SearchResultsProps) {
     queryKey: ['search', query, filters],
     queryFn: async ({ pageParam = 1 }) => {
       // If we have a query, use search endpoint
-      if (query) {
-        return tmdbService.searchMovies(query, pageParam)
+      if (query && query.trim() !== '') {
+        const results = await tmdbService.searchMovies(query, pageParam)
+        
+        // Apply client-side filtering for search results
+        if (filters.genre || filters.year || filters.minRating) {
+          const filteredResults = results.results.filter(movie => {
+            if (filters.genre && !movie.genre_ids.includes(Number(filters.genre))) {
+              return false
+            }
+            if (filters.year && new Date(movie.release_date).getFullYear() !== Number(filters.year)) {
+              return false
+            }
+            if (filters.minRating && movie.vote_average < Number(filters.minRating)) {
+              return false
+            }
+            return true
+          })
+          
+          return {
+            ...results,
+            results: filteredResults,
+          }
+        }
+        
+        return results
       }
       
       // Otherwise, use discover endpoint with filters
-      return tmdbService.discoverMovies({
+      const discoverFilters = {
         page: pageParam,
         genre: filters.genre ? Number(filters.genre) : undefined,
         year: filters.year ? Number(filters.year) : undefined,
         sort_by: filters.sort as any || 'popularity.desc',
-      })
+        minRating: filters.minRating ? Number(filters.minRating) : undefined,
+      }
+      
+      return tmdbService.discoverMovies(discoverFilters)
     },
     getNextPageParam: (lastPage) =>
       lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
-    enabled: true,
   })
 
   const movies = data?.pages.flatMap((page) => page.results) || []
@@ -85,7 +110,7 @@ export function SearchResults({ query, filters }: SearchResultsProps) {
       )}
 
       {/* Results Display */}
-      {totalResults > 0 ? (
+      {totalResults > 0 || isLoading ? (
         <Tabs defaultValue="grid" className="w-full">
           <TabsList className="grid w-full max-w-[200px] grid-cols-2">
             <TabsTrigger value="grid" className="gap-2">
@@ -102,6 +127,7 @@ export function SearchResults({ query, filters }: SearchResultsProps) {
             <MovieGrid
               movies={movies}
               loading={isLoading}
+              skeletonCount={20}
               emptyMessage="No movies found. Try adjusting your filters."
             />
           </TabsContent>
@@ -110,14 +136,14 @@ export function SearchResults({ query, filters }: SearchResultsProps) {
             <MovieList movies={movies} />
           </TabsContent>
         </Tabs>
-      ) : !isLoading ? (
+      ) : (
         <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
           <p className="mb-2 text-lg font-medium">No movies found</p>
           <p className="text-sm text-muted-foreground">
             Try adjusting your search terms or filters
           </p>
         </div>
-      ) : null}
+      )}
 
       {/* Load More */}
       {hasNextPage && (

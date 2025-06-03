@@ -70,6 +70,7 @@ export function useDiscoverMovies(filters: MovieFilters) {
     getNextPageParam: (lastPage) =>
       lastPage.page < lastPage.total_pages ? lastPage.page + 1 : undefined,
     initialPageParam: 1,
+    enabled: true, // Always enabled
   })
 }
 
