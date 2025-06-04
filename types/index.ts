@@ -93,6 +93,7 @@ export interface MovieFilters {
   year?: number
   sort_by?: SortOption
   page?: number
+  minRating?: number
 }
 
 export type SortOption = 
@@ -102,6 +103,16 @@ export type SortOption =
   | 'vote_average.asc'
   | 'release_date.desc' 
   | 'release_date.asc'
+  | 'revenue.desc'
+  | 'revenue.asc'
+  | 'primary_release_date.desc'
+  | 'primary_release_date.asc'
+  | 'original_title.desc'
+  | 'original_title.asc'
+  | 'vote_count.desc'
+  | 'vote_count.asc'
+  | 'title.asc'
+  | 'title.desc'
 
 // User types
 export interface User {
