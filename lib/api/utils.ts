@@ -28,12 +28,21 @@ export function getImageUrl(
 /**
  * Format movie release date
  */
-export function formatDate(dateString: string | null | undefined): string {
+export function formatDate(dateString: string | null | undefined, format: string | null | undefined): string {
   if (!dateString) return 'TBA'
   
   try {
     const date = new Date(dateString)
-    return date.getFullYear().toString()
+    if (format === 'full') {
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    } else {
+      return date.getFullYear().toString()
+    }
+
   } catch {
     return 'TBA'
   }

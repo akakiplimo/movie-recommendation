@@ -116,7 +116,7 @@ export function SearchBar() {
                     <div className="flex-1 overflow-hidden">
                       <h4 className="truncate font-medium">{movie.title}</h4>
                       <p className="text-sm text-muted-foreground">
-                        {formatDate(movie.release_date)} • ★ {formatRating(movie.vote_average)}
+                        {formatDate(movie.release_date, 'year')} • ★ {formatRating(movie.vote_average)}
                       </p>
                     </div>
                   </Link>

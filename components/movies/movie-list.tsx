@@ -51,7 +51,7 @@ export function MovieList({ movies, className }: MovieListProps) {
               <div className="mt-1 flex flex-wrap items-center gap-3 text-sm text-muted-foreground">
                 <span className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
-                  {formatDate(movie.release_date)}
+                  {formatDate(movie.release_date, 'year')}
                 </span>
                 <span className="flex items-center gap-1">
                   <Star className="h-3 w-3 fill-yellow-500 text-yellow-500" />

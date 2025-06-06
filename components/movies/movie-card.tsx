@@ -76,7 +76,7 @@ export function MovieCard({ movie, priority = false, className }: MovieCardProps
             </h3>
             <div className="mt-1 flex items-center gap-2 text-sm text-gray-300">
               <Calendar className="h-3 w-3" />
-              <span>{formatDate(movie.release_date)}</span>
+              <span>{formatDate(movie.release_date, 'year')}</span>
             </div>
           </div>
 
