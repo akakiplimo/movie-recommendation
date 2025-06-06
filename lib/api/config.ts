@@ -1,5 +1,5 @@
 export const TMDB_CONFIG = {
-  API_KEY: process.env.NEXT_PUBLIC_TMDB_API_KEY,
+  API_KEY: process.env.NEXT_TMDB_API_KEY,
   BASE_URL: process.env.NEXT_PUBLIC_TMDB_BASE_URL || 'https://api.themoviedb.org/3',
   IMAGE_BASE_URL: process.env.NEXT_PUBLIC_TMDB_IMAGE_BASE_URL || 'https://image.tmdb.org/t/p',
   
@@ -28,5 +28,5 @@ export const TMDB_CONFIG = {
 
 // Validate API key exists
 if (!TMDB_CONFIG.API_KEY) {
-  throw new Error('TMDB API key is not configured. Please add NEXT_PUBLIC_TMDB_API_KEY to your .env.local file')
+  throw new Error('TMDB API key is not configured. Please add NEXT_TMDB_API_KEY to your .env.local file')
 }
