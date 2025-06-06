@@ -57,7 +57,7 @@ export function HeroSection({ movies }: HeroSectionProps) {
               </Badge>
               <span className="flex items-center gap-1 text-muted-foreground">
                 <Calendar className="h-3 w-3" />
-                {formatDate(currentMovie.release_date)}
+                {formatDate(currentMovie.release_date, 'year')}
               </span>
             </div>
 

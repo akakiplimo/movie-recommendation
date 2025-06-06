@@ -36,6 +36,8 @@ export default function MovieDetailsPage({
 
   const { details: movie, credits, similar, recommendations } = data
 
+  console.log('Movie Details:', movie)
+
   return (
     <div className="min-h-screen">
       {/* Hero Section with Backdrop */}
@@ -94,7 +96,7 @@ export default function MovieDetailsPage({
                   {movie.title}
                 </h1>
                 <div className="mt-2 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-                  <span>{formatDate(movie.release_date)}</span>
+                  <span>{formatDate(movie.release_date, 'year')}</span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
                     <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />

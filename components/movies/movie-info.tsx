@@ -34,7 +34,7 @@ export function MovieInfo({ movie }: MovieInfoProps) {
             <Calendar className="h-4 w-4" />
             <span>Release Date</span>
           </div>
-          <p className="mt-1 font-medium">{formatDate(movie.release_date)}</p>
+          <p className="mt-1 font-medium">{formatDate(movie.release_date, 'full')}</p>
         </div>
 
         <div>

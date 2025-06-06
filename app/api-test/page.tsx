@@ -73,7 +73,7 @@ export default function ApiTestPage() {
                 />
                 <h3 className="font-semibold text-sm">{movie.title}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {formatDate(movie.release_date)} • ★ {formatRating(movie.vote_average)}
+                  {formatDate(movie.release_date, 'year')} • ★ {formatRating(movie.vote_average)}
                 </p>
               </div>
             ))}
@@ -97,7 +97,7 @@ export default function ApiTestPage() {
                 />
                 <h3 className="font-semibold text-sm">{movie.title}</h3>
                 <p className="text-xs text-muted-foreground">
-                  {formatDate(movie.release_date)} • ★ {formatRating(movie.vote_average)}
+                  {formatDate(movie.release_date, 'year')} • ★ {formatRating(movie.vote_average)}
                 </p>
               </div>
             ))}
