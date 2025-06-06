@@ -1,12 +1,11 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 import { tmdbClient } from './client'
 import {
-  Movie,
   MovieDetails,
   MovieResponse,
   Genre,
   MovieCredits,
-  Cast,
-  Crew,
   MovieFilters,
 } from '@/types'
 

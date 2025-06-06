@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useDiscoverMovies, useGenres } from '@/lib/hooks/use-movies'
 import { MovieGrid } from '@/components/movies/movie-grid'
@@ -13,6 +12,10 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
+// Define a type for sort options
+type SortOption = 'popularity.desc' | 'vote_average.desc' | 'release_date.desc' | 
+                  'release_date.asc' | 'title.asc' | 'title.desc'
+
 const sortOptions = [
   { value: 'popularity.desc', label: 'Most Popular' },
   { value: 'vote_average.desc', label: 'Highest Rated' },
@@ -20,7 +23,7 @@ const sortOptions = [
   { value: 'release_date.asc', label: 'Oldest First' },
   { value: 'title.asc', label: 'Title (A-Z)' },
   { value: 'title.desc', label: 'Title (Z-A)' },
-]
+] as const;
 
 export default function MoviesPage() {
   const router = useRouter()
@@ -34,7 +37,7 @@ export default function MoviesPage() {
   // Create filters object
   const filters = {
     genre: genreParam ? Number(genreParam) : undefined,
-    sort_by: sortParam as any,
+    sort_by: sortParam as SortOption,
   }
   
   const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useDiscoverMovies(filters)

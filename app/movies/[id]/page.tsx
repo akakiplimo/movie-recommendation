@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client'
 
 import { notFound } from 'next/navigation'
@@ -16,9 +18,7 @@ import React, { Usable } from 'react'
 
 export default function MovieDetailsPage({
   params,
-}: {
-  params: { id: string } | Promise<{ id: string }>
-}) {
+}: any) {
   const { id } = React.use(params as Usable<{ id: string; }>)
   const { data, isLoading, error } = useMovieDetails(id)
 

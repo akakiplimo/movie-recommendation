@@ -2,6 +2,7 @@
 
 import { usePopularMovies, useTrendingMovies, useGenres } from '@/lib/hooks/use-movies'
 import { getImageUrl, formatRating, formatDate } from '@/lib/api/utils'
+import Image from 'next/image'
 
 export default function ApiTestPage() {
   const { data: popularData, isLoading: popularLoading, error: popularError } = usePopularMovies()
@@ -66,11 +67,15 @@ export default function ApiTestPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {popularData?.pages[0].results.slice(0, 5).map((movie) => (
               <div key={movie.id} className="space-y-2">
-                <img
-                  src={getImageUrl(movie.poster_path, 'medium')}
-                  alt={movie.title}
-                  className="w-full rounded-lg"
-                />
+                <div className="relative aspect-[2/3] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src={getImageUrl(movie.poster_path, 'medium')}
+                    alt={movie.title}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+                    className="object-cover"
+                  />
+                </div>
                 <h3 className="font-semibold text-sm">{movie.title}</h3>
                 <p className="text-xs text-muted-foreground">
                   {formatDate(movie.release_date, 'year')} • ★ {formatRating(movie.vote_average)}
@@ -90,11 +95,15 @@ export default function ApiTestPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
             {trendingData?.results.slice(0, 5).map((movie) => (
               <div key={movie.id} className="space-y-2">
-                <img
-                  src={getImageUrl(movie.poster_path, 'medium')}
-                  alt={movie.title}
-                  className="w-full rounded-lg"
-                />
+                <div className="relative aspect-[2/3] w-full rounded-lg overflow-hidden">
+                  <Image
+                    src={getImageUrl(movie.poster_path, 'medium')}
+                    alt={movie.title}
+                    fill
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+                    className="object-cover"
+                  />
+                </div>
                 <h3 className="font-semibold text-sm">{movie.title}</h3>
                 <p className="text-xs text-muted-foreground">
                   {formatDate(movie.release_date, 'year')} • ★ {formatRating(movie.vote_average)}

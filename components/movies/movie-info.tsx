@@ -87,7 +87,7 @@ export function MovieInfo({ movie }: MovieInfoProps) {
       {/* Tagline */}
       {movie.tagline && (
         <blockquote className="border-l-4 border-primary pl-4 italic text-muted-foreground">
-          "{movie.tagline}"
+          &quot;{movie.tagline}&quot;
         </blockquote>
       )}
     </div>

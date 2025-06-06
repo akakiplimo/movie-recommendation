@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Film, Menu, Search, X } from 'lucide-react'
+import { Film, Menu, Search } from 'lucide-react'
 import { SearchBar } from '@/components/search/search-bar'
 import { UserMenu } from '@/components/auth/user-menu'
 import { Button } from '@/components/ui/button'

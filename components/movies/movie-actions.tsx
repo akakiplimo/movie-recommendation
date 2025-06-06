@@ -1,9 +1,11 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { Heart, Clock, Share2, Play, Download } from 'lucide-react'
+import { Heart, Clock, Share2, Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   DropdownMenu,
@@ -26,14 +28,7 @@ export function MovieActions({ movieId, className }: MovieActionsProps) {
   const [inWatchlist, setInWatchlist] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  // Check if movie is in favorites/watchlist
-  useEffect(() => {
-    if (session?.user?.id) {
-      checkUserLists()
-    }
-  }, [session, movieId])
-
-  const checkUserLists = async () => {
+  const checkUserLists = useCallback(async () => {
     try {
       const [favResponse, watchResponse] = await Promise.all([
         fetch('/api/favorites'),
@@ -52,7 +47,14 @@ export function MovieActions({ movieId, className }: MovieActionsProps) {
     } catch (error) {
       console.error('Failed to check user lists:', error)
     }
-  }
+  }, [movieId])
+
+  // Check if movie is in favorites/watchlist
+  useEffect(() => {
+    if (session?.user?.id) {
+      checkUserLists()
+    }
+  }, [session, checkUserLists])
 
   const handleFavorite = async () => {
     if (!session) {
@@ -77,6 +79,7 @@ export function MovieActions({ movieId, className }: MovieActionsProps) {
         })
       }
     } catch (error) {
+      console.error('Error updating favorites:', error)
       toast.error(isFavorite ? 'Removed from favorites' : 'Added to favorites', {
         description: 'Failed to update favorites',
       })
@@ -108,6 +111,7 @@ export function MovieActions({ movieId, className }: MovieActionsProps) {
         })
       }
     } catch (error) {
+      console.error('Error updating watchlist:', error)
       toast.error('Error', {
         description: 'Failed to update watchlist',
       })

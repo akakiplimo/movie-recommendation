@@ -2,10 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Calendar, Star, Clock } from 'lucide-react'
+import { Calendar, Star } from 'lucide-react'
 import { Movie } from '@/types'
 import { getImageUrl, formatRating, formatDate } from '@/lib/api/utils'
-import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 

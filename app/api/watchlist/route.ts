@@ -18,6 +18,7 @@ export async function GET() {
 
     return NextResponse.json(watchlist)
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { message: 'Failed to fetch watchlist' },
       { status: 500 }
@@ -63,6 +64,7 @@ export async function POST(request: Request) {
       return NextResponse.json(item)
     }
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { message: 'Failed to update watchlist' },
       { status: 500 }

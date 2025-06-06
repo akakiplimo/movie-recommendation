@@ -8,7 +8,6 @@ import { useSearchMovies } from '@/lib/hooks/use-movies'
 import { getImageUrl, formatDate, formatRating } from '@/lib/api/utils'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import Link from 'next/link'
 
@@ -130,12 +129,12 @@ export function SearchBar() {
                 }}
                 className="block border-t p-3 text-center text-sm font-medium text-primary hover:bg-accent"
               >
-                View all results for "{query}"
+                View all results for &quot;{query}&quot;
               </Link>
             </>
           ) : (
             <div className="p-8 text-center text-muted-foreground">
-              No results found for "{debouncedQuery}"
+              No results found for &quot;{debouncedQuery}&quot;
             </div>
           )}
         </div>

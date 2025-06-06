@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Calendar, Filter, RotateCcw } from 'lucide-react'
+import { Filter, RotateCcw } from 'lucide-react'
 import { useGenres } from '@/lib/hooks/use-movies'
 import { Button } from '@/components/ui/button'
 import {

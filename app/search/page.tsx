@@ -31,7 +31,7 @@ function SearchContent() {
         </h1>
         {query && (
           <p className="mt-2 text-muted-foreground">
-            Searching for "{query}"
+            Searching for &quot;{query}&quot;
           </p>
         )}
       </div>

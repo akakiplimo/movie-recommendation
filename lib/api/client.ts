@@ -1,6 +1,5 @@
 import axios, { AxiosError } from 'axios';
 import { TMDB_CONFIG } from './config';
-import { error } from 'console';
 
 // Create axios instance with default config
 export const tmdbClient = axios.create({

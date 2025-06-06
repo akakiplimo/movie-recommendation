@@ -1,3 +1,5 @@
+/* eslint-disable  @typescript-eslint/no-explicit-any */
+
 'use client'
 
 import { useInfiniteQuery } from '@tanstack/react-query'
@@ -100,7 +102,7 @@ export function SearchResults({ query, filters }: SearchResultsProps) {
                 Found <span className="font-medium text-foreground">{totalResults.toLocaleString()}</span> results
                 {query && (
                   <>
-                    {' '}for "<span className="font-medium text-foreground">{query}</span>"
+                    {' '}for &quot;<span className="font-medium text-foreground">{query}</span>&quot;
                   </>
                 )}
               </>

@@ -76,10 +76,11 @@ export default function RegisterPage() {
       } else {
         router.push('/login')
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Registration error:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to create account'
       toast.error('Error', {
-        description: error.message || 'Failed to create account',
+        description: errorMessage,
       })
     } finally {
       setIsLoading(false)
@@ -90,10 +91,11 @@ export default function RegisterPage() {
     setIsLoading(true)
     try {
       await signIn('google', { callbackUrl: '/' })
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Google sign in error:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Failed to sign in with Google'
       toast.error('Error', {
-        description: 'Failed to sign in with Google',
+        description: errorMessage,
       })
       setIsLoading(false)
     }

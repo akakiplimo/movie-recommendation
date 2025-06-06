@@ -18,6 +18,7 @@ export async function GET() {
 
     return NextResponse.json(favorites)
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { message: 'Failed to fetch favorites' },
       { status: 500 }
@@ -63,6 +64,7 @@ export async function POST(request: Request) {
       return NextResponse.json(favorite)
     }
   } catch (error) {
+    console.error(error)
     return NextResponse.json(
       { message: 'Failed to update favorites' },
       { status: 500 }
