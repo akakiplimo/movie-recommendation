@@ -4,8 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"  // Changed from "sqlite" to "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")  // Add this for connection pooling
 }
 
 model Account {
@@ -14,17 +15,18 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String?
-  access_token      String?
+  refresh_token     String? @db.Text  // Add @db.Text for long strings
+  access_token      String? @db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String?
+  id_token          String? @db.Text
   session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+  @@index([userId])  // Add index for better performance
 }
 
 model Session {
@@ -33,6 +35,8 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
 }
 
 model User {
@@ -40,7 +44,7 @@ model User {
   email          String    @unique
   emailVerified  DateTime?
   name           String?
-  image          String?
+  image          String?   @db.Text  // URLs can be long
   hashedPassword String?
   createdAt      DateTime  @default(now())
   updatedAt      DateTime  @updatedAt
@@ -49,6 +53,8 @@ model User {
   sessions      Session[]
   favorites     Favorite[]
   watchlistItems WatchlistItem[]
+  
+  @@index([email])
 }
 
 model VerificationToken {
@@ -68,6 +74,8 @@ model Favorite {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([userId, movieId])
+  @@index([userId])
+  @@index([movieId])
 }
 
 model WatchlistItem {
@@ -79,4 +87,6 @@ model WatchlistItem {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   
   @@unique([userId, movieId])
+  @@index([userId])
+  @@index([movieId])
 }
